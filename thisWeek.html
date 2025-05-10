@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title> ماموریت ها </title>
+    <link rel="stylesheet" type="text/css" href="style.css" >
+</head>
+<body>
+    
+    <div id="darsad" style="display: flex;">
+        <p> 0% </p>
+    </div>
+
+    <div id="menuParent" style="display: block;">
+        <img src="icons/menu.png" width="auto" height="110px">
+    </div>
+
+    <div class="menu hidden">
+        <img id='infoBTN'src="icons/info.png" width="auto" height="90%">
+        <img id="addBTN" src="icons/add.png" width="auto" height="90%">
+        <img id="backBTN" src="icons/backicon.png" width="auto" height="90%">
+        <img id='closeBTN' src="icons/close.png" width="auto" height="90%">
+    </div>
+
+    <div class="add hidden"> 
+        <form>
+        <p class="add_p"> نام ماموریت: </p><input value="کتاب" type="text" required id="one"><hr>
+        <div class="top1">
+        <p class="add_p"> واحد: <input value="10" type="number" required min="1" max="99" id="two"></p>
+        <p class="add_p"> یکا: <input value="صفحه" type="text" required id="three"></p></div><hr>
+        <div class="top1">
+        <p class="add_p"> تکرار: <input value="7" type="number" required min="1" max="99" id="four"></p>
+        <p class="add_p"> اولویت: <input value="12" type="number" required id="five"></p></div><hr>
+        <input type="submit" value=" ثبت " id="sub">
+        </form>
+    </div>
+
+    <div class="items"></div>
+
+    <script type="text/javascript" src="app.js"></script>
+
+</body>
+</html>
