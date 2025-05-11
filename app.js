@@ -126,11 +126,9 @@ function creatItem(){
 }
 
 
-
-// تابع دکمه ی افزایش
-function plus(e){
-    
-    //گرفتن مقادیر آیتم و ساخت آبجکت برای ارسال به بخش حذف
+// تابع کمکی گرفتن مقادیر آیتم
+function helper(e){
+    const pTag = e.target.parentElement.children[2]
     const p = e.target.parentElement.children[2].textContent.split(' ') ;
     switch (p.length){
         case 3 : var name = p[2]; break;
@@ -142,10 +140,18 @@ function plus(e){
     const tekrar = Number(num0.match(/\d{1,3}/)[0]);
     const vahed = Number(p[0])/tekrar;
     const olaviyat = -e.target.parentElement.parentElement.style.order
-    const mainObj = { name , vahed , yeka , tekrar , olaviyat};
+    const Obj = { name , vahed , yeka , tekrar , olaviyat};
     const haveDiv = e.target.parentElement.parentElement.children[1].children.length
     // دستگاه تشخیص اعداد تا 3 رقم برای ظرفیت اسپن دوم
     const num1 = Number(num0.match(/\d{1,3}/)[0]);
+    const items = {pTag , p , name , yeka , span2 , num0 , tekrar , vahed , olaviyat , Obj , haveDiv , num1} 
+    return items
+}
+
+
+// تابع دکمه ی افزایش
+function plus(e){
+    const {p , span2 , Obj , haveDiv , num1} = helper(e) ;
     // اگه نوار وظیفه وجود نداره با اولین کلیک رو دکمه ی افزایش یدونه بساز
     if(haveDiv === 0){
         const div = document.createElement('div');
@@ -156,7 +162,7 @@ function plus(e){
         // اگه ظرفیت کلا یدونه بود، مستقیم نوار وظیفه ی ساخته شده رو طلایی کن
         if (num1 === 1) {span2.children[0].style.backgroundColor = "goldenrod" }
         //Local Storage
-        ls.setDone(mainObj , 1)
+        ls.setDone(Obj , 1)
     // اگه نوار وظیفه وجود داشت، اونو یه واحد بیشتر کن
     }else{
         // دستگاه تشخیص اعداد تا 3 رقم برای مقدار نوار وظیفه
@@ -167,14 +173,14 @@ function plus(e){
         let newNum = num2+1;
         span2.children[0].style.gridColumn = `span ${newNum}`;
         percent(span2 , num1 , num2, p);
-        ls.setDone(mainObj , newNum);
+        ls.setDone(Obj , newNum);
         // وقتی ظرفیت نوار وظیفه پر شد، رنگشو عوض کن
         }else if (num2 < num1){
         let newNum = num2+1;
         span2.children[0].style.gridColumn = `span ${newNum}`;
         span2.children[0].style.backgroundColor = "goldenrod";
         percent(span2 , num1 , num2 , p);
-        ls.setDone(mainObj , newNum);
+        ls.setDone(Obj , newNum);
         }
     }
 }
@@ -182,22 +188,7 @@ function plus(e){
 
 // تابع دکمه ی کاهش 
 function subtrac(e){
-
-    const p = e.target.parentElement.children[2].textContent.split(' ') ;
-    switch (p.length){
-        case 3 : var name = p[2]; break;
-        case 4 : var name = `${p[2]} ${p[3]}`; break;
-        case 5 : var name = `${p[2]} ${p[3]} ${p[4]}`; break;}
-    const yeka = p[1];
-    const span2 = e.target.parentElement.parentElement.children[1];
-    const num0 = span2.style.gridTemplateColumns;
-    const tekrar = Number(num0.match(/\d{1,3}/)[0]);
-    const vahed = Number(p[0])/tekrar;
-    const olaviyat = -e.target.parentElement.parentElement.style.order
-    const mainObj = { name , vahed , yeka , tekrar , olaviyat};
-    const haveDiv = e.target.parentElement.parentElement.children[1].children.length
-    // دستگاه تشخیص اعداد تا 3 رقم برای ظرفیت اسپن دوم
-    const num1 = Number(num0.match(/\d{1,3}/)[0]);
+    const {p , span2 , Obj , haveDiv , num1} = helper(e);
     // اگه نوار وظیفه وجود داشت یه واحد کمترش کن
     if (haveDiv !== 0){
         // دستگاه تشخیص اعداد تا 3 رقم برای مقدار نوار وظیفه
@@ -209,17 +200,17 @@ function subtrac(e){
         span2.children[0].style.gridColumn = `span ${newNum}`;
         span2.children[0].style.backgroundColor = "blue";
         percent(span2 , num1 , newNum-1 , p);
-        ls.setDone(mainObj , newNum);
+        ls.setDone(Obj , newNum);
         // اگه نوار وظیفه فقط یدونه پر بود، کلا حذفش کن
         }else if (num2 === 1){
             span2.children[0].remove();
-            ls.setDone(mainObj , 0);
+            ls.setDone(Obj , 0);
         // اگه هیچکدوم از دو شرط بالا رو نداشت، فقط یدونه کمش کن
         }else{
         const newNum = num2-1;
         span2.children[0].style.gridColumn = `span ${newNum}`;
         percent(span2 , num1 , newNum-1, p);
-        ls.setDone(mainObj , newNum);
+        ls.setDone(Obj , newNum);
         }
     }
 }
@@ -231,6 +222,8 @@ var vahed = p[0]/num1;
 var num = num2+1;
 span2.children[0].innerHTML= `${vahed*num} ${p[1]} (%${Math.floor((num/num1)*100)})`
 }
+
+
 // درصد کل وظایف 
 function allPer(){
     ls.getData
@@ -239,26 +232,7 @@ function allPer(){
 
 // تابع دکمه ی ویرایش 
 function edit(e){
-    // گرفتن مقادیر قبلی آیتم برای نمایش در ورودی ها
-    var pTag = e.target.parentElement.children[2]
-    var p = e.target.parentElement.children[2].textContent.split(' ') ;
-    if (p.length === 3){var name = p[2];}
-    else if (p.length === 4){var name = p[2]+' '+p[3];}
-    else if (p.length === 5){var name = p[2]+' '+p[3]+' '+p[4];}
-    var yeka = p[1];
-    var span2 = e.target.parentElement.parentElement.children[1];
-    var num0 = span2.style.gridTemplateColumns;
-    var tekrar = Number(num0.match(/\d{1,3}/)[0]);
-    var vahed = Number(p[0])/tekrar;
-    var olaviyat = -e.target.parentElement.parentElement.style.order
-    // Local Storage
-    var mainObj = {
-        i1: name ,
-        i2: vahed ,
-        i3: yeka ,
-        i4: tekrar ,
-        i5: olaviyat
-    };
+    const {pTag , name , yeka , span2 , tekrar , vahed , olaviyat , Obj } = helper(e);
     // ساخت تمام عنصر های لازم
     var editPage = document.createElement('div');
     var p1 = document.createElement('p');
@@ -351,15 +325,15 @@ function edit(e){
         span2.style.gridTemplateColumns =  'repeat('+inputNum2.value+', 1fr)';
         if (span2.children.length !== 0){span2.children[0].remove();}
         // Local Storage
-        var obj = {
+        const newObj = {
             i1: inputText1.value,
             i2: inputNum1.value,
             i3: inputText2.value,
             i4: inputNum2.value,
             i5: inputNum3.value
         } ;
-        ls.deleteData(mainObj);
-        ls.setData(obj);
+        ls.deleteData(Obj);
+        ls.setData(newObj);
         laghv()  
     }
     // بستن صفحه ی ویرایش 
@@ -369,33 +343,13 @@ function edit(e){
 
 // تابع دکمه ی حذف
 function del(e){
-    //Local Storage
-    //گرفتن مقادیر آیتم و ساخت آبجکت برای ارسال به بخش حذف
-    var pTag = e.target.parentElement.children[2]
-    var p = e.target.parentElement.children[2].textContent.split(' ') ;
-    if (p.length === 3){var name = p[2];}
-    else if (p.length === 4){var name = p[2]+' '+p[3];}
-    else if (p.length === 5){var name = p[2]+' '+p[3]+' '+p[4];}
-    var yeka = p[1];
-    var span2 = e.target.parentElement.parentElement.children[1];
-    var num0 = span2.style.gridTemplateColumns;
-    var tekrar = Number(num0.match(/\d{1,3}/)[0]);
-    var vahed = Number(p[0])/tekrar;
-    var olaviyat = -e.target.parentElement.parentElement.style.order
-    // Local Storage
-    var mainObj = {
-        i1: name ,
-        i2: vahed ,
-        i3: yeka ,
-        i4: tekrar ,
-        i5: olaviyat
-    };
+    const {Obj} = helper(e);
     // ساخت تمام عنصر های لازم
     var deletePage = document.createElement('div');
     var sub = document.createElement('input'); 
     var can = document.createElement('input');
     var div = document.createElement('div');
-    var p = document.createElement('p');
+    var p0 = document.createElement('p');
     var pTag = e.target.parentElement.children[2].textContent;
     // ویژگی های عناصر
     deletePage.className = "delPage";
@@ -405,19 +359,19 @@ function del(e){
     can.setAttribute('type' , 'submit');
     sub.value = "حذف" ;
     can.value = "لغو" ;
-    p.innerHTML = "آیا از حذف این آیتم ("+pTag+") اطمینان دارید؟";
+    p0.innerHTML = "آیا از حذف این آیتم ("+pTag+") اطمینان دارید؟";
     
 
     // جاگذاری عناصر 
     document.body.append(deletePage);
     div.append(sub , can);
-    deletePage.append(p ,div);
+    deletePage.append(p0 ,div);
     can.addEventListener('click' , laghv);
     sub.addEventListener('click' , subDelete);
 
     function subDelete(){
         e.target.parentElement.parentElement.remove()
-        ls.deleteData(mainObj);
+        ls.deleteData(Obj);
         laghv();
     }
     
