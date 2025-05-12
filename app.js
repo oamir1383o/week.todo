@@ -117,6 +117,7 @@ function creatItem(){
         i6: 0
     } ;
     ls.setData(obj);
+    allPer();
     // پاک کردن ورودی ها
     inp1.value = "";
     inp2.value = "";
@@ -158,6 +159,7 @@ function plus(e){
         div.setAttribute('class' , 'fraktion');
         div.style.gridColumn = "span 1";
         span2.append(div);
+        ls.setDone(Obj , 1)
         percent(span2 , num1 , 0, p);
         // اگه ظرفیت کلا یدونه بود، مستقیم نوار وظیفه ی ساخته شده رو طلایی کن
         if (num1 === 1) {span2.children[0].style.backgroundColor = "goldenrod" }
@@ -172,15 +174,15 @@ function plus(e){
         if (num2 < num1-1){
         let newNum = num2+1;
         span2.children[0].style.gridColumn = `span ${newNum}`;
-        percent(span2 , num1 , num2, p);
         ls.setDone(Obj , newNum);
+        percent(span2 , num1 , num2, p);
         // وقتی ظرفیت نوار وظیفه پر شد، رنگشو عوض کن
         }else if (num2 < num1){
         let newNum = num2+1;
         span2.children[0].style.gridColumn = `span ${newNum}`;
         span2.children[0].style.backgroundColor = "goldenrod";
-        percent(span2 , num1 , num2 , p);
         ls.setDone(Obj , newNum);
+        percent(span2 , num1 , num2 , p);
         }
     }
 }
@@ -199,8 +201,8 @@ function subtrac(e){
         const newNum = num2-1;
         span2.children[0].style.gridColumn = `span ${newNum}`;
         span2.children[0].style.backgroundColor = "blue";
-        percent(span2 , num1 , newNum-1 , p);
         ls.setDone(Obj , newNum);
+        percent(span2 , num1 , newNum-1 , p);
         // اگه نوار وظیفه فقط یدونه پر بود، کلا حذفش کن
         }else if (num2 === 1){
             span2.children[0].remove();
@@ -210,8 +212,8 @@ function subtrac(e){
         }else{
         const newNum = num2-1;
         span2.children[0].style.gridColumn = `span ${newNum}`;
-        percent(span2 , num1 , newNum-1, p);
         ls.setDone(Obj , newNum);
+        percent(span2 , num1 , newNum-1, p);
         }
     }
 }
@@ -222,13 +224,19 @@ function percent(span2 , num1 , num2 , p){
 var vahed = p[0]/num1;
 var num = num2+1;
 span2.children[0].innerHTML= `${vahed*num} ${p[1]} (%${Math.floor((num/num1)*100)})`
-allPer(num , num1)
+allPer()
 }
 
 
 // درصد کل وظایف 
-function allPer(num , num1){
-   
+function allPer(){
+    let all = 0;
+    const dataArray = ls.getData();
+    for (var i = 0 ; i < dataArray.length ; i++){
+        const per = Math.floor((dataArray[i].i6/dataArray[i].i4)*100)
+        all += per;
+        }
+    darsad.children[0].innerHTML = Math.floor(all/dataArray.length)+"%" ;
 }
 
 
@@ -338,6 +346,7 @@ function edit(e){
         ls.deleteData(Obj);
         ls.setData(newObj);
         laghv();
+        allPer();
     }
     // بستن صفحه ی ویرایش 
     function laghv(){cancel.parentElement.remove();}
@@ -376,6 +385,7 @@ function del(e){
         e.target.parentElement.parentElement.remove()
         ls.deleteData(Obj);
         laghv();
+        allPer();
     }
     
     function laghv(){deletePage.remove();}
@@ -499,5 +509,12 @@ const ls = {
         dataArray[index].i6 = doNum;
         localStorage.setItem("itm" , JSON.stringify(dataArray)); 
     },
+
+    getPer: function(){
+        let perArray ;
+        const perString = localStorage.getItem("per");
+        perString === null ? perArray = [] : perArray = JSON.parse(perString);
+        return perArray;
+    }
 }
 document.addEventListener("DOMContentLoaded" , ls.showData);
