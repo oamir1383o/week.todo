@@ -205,6 +205,7 @@ function subtrac(e){
         }else if (num2 === 1){
             span2.children[0].remove();
             ls.setDone(Obj , 0);
+            allPer(0 , num1);
         // اگه هیچکدوم از دو شرط بالا رو نداشت، فقط یدونه کمش کن
         }else{
         const newNum = num2-1;
@@ -221,12 +222,13 @@ function percent(span2 , num1 , num2 , p){
 var vahed = p[0]/num1;
 var num = num2+1;
 span2.children[0].innerHTML= `${vahed*num} ${p[1]} (%${Math.floor((num/num1)*100)})`
+allPer(num , num1)
 }
 
 
 // درصد کل وظایف 
-function allPer(){
-    ls.getData
+function allPer(num , num1){
+   
 }
 
 
@@ -319,7 +321,7 @@ function edit(e){
     // ثبت ویرایش
     function submitEdit() {
         pTag.innerHTML = "";
-        var inp = inputNum1.value*inputNum2.value ;
+        const inp = inputNum1.value*inputNum2.value ;
         pTag.append(inp + ' ' , inputText2.value + " " , inputText1.value)
         span2.parentElement.style.order = -inputNum3.value;
         span2.style.gridTemplateColumns =  'repeat('+inputNum2.value+', 1fr)';
@@ -330,11 +332,12 @@ function edit(e){
             i2: inputNum1.value,
             i3: inputText2.value,
             i4: inputNum2.value,
-            i5: inputNum3.value
+            i5: inputNum3.value,
+            i6: 0
         } ;
         ls.deleteData(Obj);
         ls.setData(newObj);
-        laghv()  
+        laghv();
     }
     // بستن صفحه ی ویرایش 
     function laghv(){cancel.parentElement.remove();}
@@ -379,7 +382,20 @@ function del(e){
 
 }
 
+// برای پیدا کردن ایندکس آیتم
+function findINDEX(dA , obj){
+    const {name , vahed , yeka , tekrar , olaviyat} = obj;
+    const index = dA.findIndex(function(data){   
+            return (data.i1 == name &&
+                    data.i2 == vahed &&
+                    data.i3 == yeka &&
+                    data.i4 == tekrar &&
+                    data.i5 == olaviyat )});
+    return index
+}
 
+
+// بخش دیتا بیس
 const ls = {
 
     getData: function(){
@@ -465,13 +481,7 @@ const ls = {
 
     deleteData: function(obj){
         const dataArray = ls.getData();
-        const {name , vahed , yeka , tekrar , olaviyat} = obj;
-        const index = dataArray.findIndex(function(data){   
-            return (data.i1 == name &&
-                    data.i2 == vahed &&
-                    data.i3 == yeka &&
-                    data.i4 == tekrar &&
-                    data.i5 == olaviyat )});
+        const index = findINDEX(dataArray , obj);
         dataArray.splice(index , 1);
         localStorage.setItem("itm" , JSON.stringify(dataArray));
     },
@@ -485,13 +495,7 @@ const ls = {
 
     setDone: function(obj , doNum){
         const dataArray = ls.getData();
-        const {name , vahed , yeka , tekrar , olaviyat} = obj;
-        const index = dataArray.findIndex(function(data){   
-            return (data.i1 == name &&
-                    data.i2 == vahed &&
-                    data.i3 == yeka &&
-                    data.i4 == tekrar &&
-                    data.i5 == olaviyat )});
+        const index = findINDEX(dataArray , obj);
         dataArray[index].i6 = doNum;
         localStorage.setItem("itm" , JSON.stringify(dataArray)); 
     },
