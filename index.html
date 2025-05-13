@@ -46,11 +46,15 @@
 </head>
 <body>
     <button id="btn1"> ماموریت های این هفته! </button>
-    <button> کارکرد هفته های پیشین </button>
-    <button> به خودت جایزه بده! </button>
+    <button id="btn2"> کارکرد هفته های پیشین </button>
+    <button id="btn3"> به خودت جایزه بده! </button>
     <script>
         var btn1 = document.getElementById('btn1');
+        var btn2 = document.getElementById('btn2');
+        var btn3 = document.getElementById('btn3');
+
         btn1.addEventListener('click' , function(){window.location.href='thisWeek.html'});
+        btn3.addEventListener('click' , function(){window.location.href='gift.html'});
         
     </script>
 </body>
