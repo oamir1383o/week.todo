@@ -38,17 +38,37 @@ function add(){
 
 function create (e){
     const input = e.target.parentElement.parentElement.children[0].value
-    console.log(input);
+    if (input === ''){alert("چیزی ننوشتی که!")}else{
+    const div = document.createElement('div'); div.className = "item" ; items.append(div);
+    const img = document.createElement("img") ; img.className = "heart" ; img.setAttribute("src" , "icons/lightHeart.png" ); div.append(img);
+    const p = document.createElement("p") ; p.className = "text" ; p.innerHTML = input ; div.append(p);
+    const div0 = document.createElement("div") ; div0.className = "itemBTN" ;  div.append(div0);
+    const Edit = document.createElement("button") ; Edit.className = "itemBTN1" ; Edit.innerHTML = "ویرایش" ; div0.append(Edit);
+    const Del = document.createElement("button") ; Del.className = "itemBTN2" ; Del.innerHTML = "حذف" ; div0.append(Del);
+    e.target.parentElement.parentElement.remove();
+    Edit.addEventListener("click" , edit);
+    Del.addEventListener("click" , del);
+}}
+
+function edit(e){
+    console.log('editttt');
     
-    const div = document.createElement('div');
-    items.append(div);
-    div.className = "item" ;
-    div.innerHTML = ` 
-    <img class="heart" src="icons/lightHeart.png" >
-    <p class="text"> ${input} </p>
-    <div class="itemBTN">
-    <button class= "itemBTN1"> ویرایش </button>
-    <button class="itemBTN2"> حذف </button>
-    </div>
-    `
+}
+
+function del(e){
+    const item = e.target.parentElement.parentElement ;
+    const text = e.target.parentElement.parentElement.children[1].textContent;
+    const div = document.createElement('div'); div.className = 'del' ; document.body.append(div);
+    const p = document.createElement('p'); p.className = 'delText'; p.innerHTML = `  آیا از حذف "${text}" اطمینان داری؟  `; div.append(p);
+    const div0 = document.createElement("div") ; div0.className = "addPageBTN" ;  div.append(div0);
+    const sub = document.createElement("input") ; sub.id = 'sub'; sub.setAttribute("type" , "submit"); sub.setAttribute("value" , "آره!"); div0.append(sub); 
+    const can = document.createElement("input") ; can.id = 'can'; can.setAttribute("type" , "button"); can.setAttribute("value" , "لغو"); div0.append(can); 
+    
+    can.addEventListener("click" , Close = () => can.parentElement.parentElement.remove());
+    sub.addEventListener("click" , deleting)
+
+    function deleting(){
+        item.remove();
+        can.parentElement.parentElement.remove();
+    }
 }
