@@ -3,6 +3,7 @@ const menuParent = document.getElementById('menuParent');
 const menu = document.getElementsByClassName('menu')[0];
 const addBTN = document.getElementById('addBTN');
 const items = document.getElementsByClassName('items')[0];
+const pop = document.getElementById('pop');
 //Events
 menuParent.addEventListener("click" , openMenu);
 closeBTN.addEventListener("click" , openMenu);
@@ -48,10 +49,26 @@ function create (e){
     e.target.parentElement.parentElement.remove();
     Edit.addEventListener("click" , edit);
     Del.addEventListener("click" , del);
+    img.addEventListener("click" , heart);
 }}
 
 function edit(e){
-    console.log('editttt');
+    let p = e.target.parentElement.parentElement.children[1];
+    const text = e.target.parentElement.parentElement.children[1].textContent;
+    const div = document.createElement('div'); div.className = 'del edit' ; document.body.append(div);
+    const inp = document.createElement('input'); inp.className = 'editInp'; inp.setAttribute('value' , text); div.append(inp);
+    const div0 = document.createElement("div") ; div0.className = "addPageBTN" ;  div.append(div0);
+    const sub = document.createElement("input") ; sub.id = 'sub'; sub.setAttribute("type" , "submit"); sub.setAttribute("value" , "ثبت"); div0.append(sub); 
+    const can = document.createElement("input") ; can.id = 'can'; can.setAttribute("type" , "button"); can.setAttribute("value" , "لغو"); div0.append(can); 
+    
+    can.addEventListener("click" , Close = () => can.parentElement.parentElement.remove());
+    sub.addEventListener("click" , editing);
+
+    function editing(){
+        if (inp.value === ""){alert("فیلد خالیه!")}else{
+        p.innerHTML = inp.value;
+        can.parentElement.parentElement.remove();
+    }}
     
 }
 
@@ -71,4 +88,13 @@ function del(e){
         item.remove();
         can.parentElement.parentElement.remove();
     }
+}
+
+function heart(e){
+    if(e.target.getAttribute('src') === "icons/lightHeart.png"){
+        e.target.setAttribute("src" , "icons/heart.png" );
+        e.target.classList.toggle('fulHeart');
+        pop.currentTime = 0.45;
+        pop.play()
+    }else {e.target.setAttribute("src" , "icons/lightHeart.png" );e.target.classList.toggle('fulHeart');}
 }
