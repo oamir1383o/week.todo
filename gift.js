@@ -32,14 +32,13 @@ function add(){
 
     sub.addEventListener('click' , create);
     can.addEventListener('click' , Close = () => can.parentElement.parentElement.remove());
-    
-     
-
 }
+
 
 function create (e){
     const input = e.target.parentElement.parentElement.children[0].value
-    if (input === ''){alert("چیزی ننوشتی که!")}else{
+    if (input === ''){alert("چیزی ننوشتی که!")}
+    else if (ls.findInd(input) !== undefined){alert("این جایزه رو قبلا نوشتی!")}else{
     const div = document.createElement('div'); div.className = "item" ; items.append(div);
     const img = document.createElement("img") ; img.className = "heart" ; img.setAttribute("src" , "icons/lightHeart.png" ); div.append(img);
     const p = document.createElement("p") ; p.className = "text" ; p.innerHTML = input ; div.append(p);
@@ -50,7 +49,9 @@ function create (e){
     Edit.addEventListener("click" , edit);
     Del.addEventListener("click" , del);
     img.addEventListener("click" , heart);
+    ls.setData(input , false);
 }}
+
 
 function edit(e){
     let p = e.target.parentElement.parentElement.children[1];
@@ -67,6 +68,7 @@ function edit(e){
     function editing(){
         if (inp.value === ""){alert("فیلد خالیه!")}else{
         p.innerHTML = inp.value;
+        ls.edit(text , inp.value);
         can.parentElement.parentElement.remove();
     }}
     
@@ -86,15 +88,90 @@ function del(e){
 
     function deleting(){
         item.remove();
+        ls.deleteData(text);
         can.parentElement.parentElement.remove();
     }
 }
 
 function heart(e){
+    const text = e.target.parentElement.children[1].textContent;
     if(e.target.getAttribute('src') === "icons/lightHeart.png"){
         e.target.setAttribute("src" , "icons/heart.png" );
         e.target.classList.toggle('fulHeart');
         pop.currentTime = 0.45;
-        pop.play()
-    }else {e.target.setAttribute("src" , "icons/lightHeart.png" );e.target.classList.toggle('fulHeart');}
+        pop.play();
+        ls.change(text , true);
+    }else{
+        e.target.setAttribute("src" , "icons/lightHeart.png" );e.target.classList.toggle('fulHeart');
+        ls.change(text , false);
+    }
 }
+
+
+const ls = {
+    findInd: function(text){
+        const dataArray = ls.getData();
+        for (var i = 0; i < dataArray.length; i++){
+        if (dataArray[i][0] === text){return i ;}
+        }
+
+    }
+,
+    getData: function(){
+        let dataArray ;
+        const dataString = localStorage.getItem("gift");
+        dataString === null ? dataArray = [] : dataArray = JSON.parse(dataString);
+        return dataArray;
+     }
+,
+    setData: function(input , heart){
+        const item = [input , heart]
+        const dataArray = ls.getData();
+        dataArray.push(item);
+        localStorage.setItem("gift" , JSON.stringify(dataArray));
+     }
+,
+    change: function(text , val){
+        const dataArray = ls.getData();
+        const index = ls.findInd(text);
+        dataArray[index][1] = val;
+        localStorage.setItem("gift" , JSON.stringify(dataArray));
+        }
+,
+    showData: function(){
+        const dataArray = ls.getData();
+        for (var i = 0; i < dataArray.length; i++){
+            ls.createAgain(dataArray[i][0] , dataArray[i][1])
+        }
+    }
+,
+    createAgain: function(text , val){
+    const div = document.createElement('div'); div.className = "item" ; items.append(div);
+    const img = document.createElement("img") ; img.className = "heart" ; div.append(img);
+    val === true? img.setAttribute("src" , "icons/heart.png") : img.setAttribute("src" , "icons/lightHeart.png" );
+    val === true? img.classList.toggle('fulHeart'): undefined;
+    const p = document.createElement("p") ; p.className = "text" ; p.innerHTML = text ; div.append(p);
+    const div0 = document.createElement("div") ; div0.className = "itemBTN" ;  div.append(div0);
+    const Edit = document.createElement("button") ; Edit.className = "itemBTN1" ; Edit.innerHTML = "ویرایش" ; div0.append(Edit);
+    const Del = document.createElement("button") ; Del.className = "itemBTN2" ; Del.innerHTML = "حذف" ; div0.append(Del);
+    Edit.addEventListener("click" , edit);
+    Del.addEventListener("click" , del);
+    img.addEventListener("click" , heart);
+    }
+,
+    deleteData: function(text){
+        const dataArray = ls.getData();
+        const index = ls.findInd(text);
+        dataArray.splice(index , 1);
+        localStorage.setItem("gift" , JSON.stringify(dataArray));
+    }
+,
+    edit: function(text , newText){
+        const dataArray = ls.getData();
+        const index = ls.findInd(text);
+        dataArray[index][0] = newText ;
+        localStorage.setItem("gift" , JSON.stringify(dataArray));
+    }
+}
+
+document.addEventListener("DOMContentLoaded" , ls.showData);
