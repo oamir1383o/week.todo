@@ -4,9 +4,9 @@
     font-weight: 400;
     src: url('fonts/iranian-sans.woff') format('woff');
 }
-html {height: 100%;}
+html {min-height: 100vh;}
 body {
-    height: 100%;
+    min-height: 100vh;
     background-image: linear-gradient( to right, white , rgba(255, 99, 71, 0.596), white , rgba(255, 99, 71, 0.596), white , rgba(255, 99, 71, 0.596), white , rgba(255, 99, 71, 0.596))
 }
 #menuParent {
@@ -95,6 +95,7 @@ body {
     align-items: center;
     justify-content: space-between;
     border-radius: 45px;
+    padding: 20px 0px;
 
 }
 .text {

@@ -13,7 +13,7 @@ const inp4 = document.getElementById('four');
 const inp5 = document.getElementById('five');
 const submit = document.getElementById('sub');
 const items = document.getElementsByClassName('items')[0];
-
+const day = document.getElementById('day');
 //Events
 addBTN.addEventListener("click" , openAdd );
 backBTN.addEventListener("click" , backPage);
@@ -237,6 +237,7 @@ function allPer(){
         all += per;
         }
     darsad.children[0].innerHTML = Math.floor(all/dataArray.length)+"%" ;
+    return Math.floor(all/dataArray.length)+"%"
 }
 
 
@@ -404,6 +405,61 @@ function findINDEX(dA , obj){
     return index
 }
 
+// تابع زمان
+function time(){
+    // برای نمایش روز هفته در صفحه 
+    const getDay = new Date().getDay();
+    ir.weekDay(getDay);
+
+    function weekStart(date){
+        const d = new Date(date);
+        const day = d.getDay();
+        const diff = day === 6 ? 0: day+1 ;
+        d.setDate(d.getDate() - diff);
+        d.setHours(0,0,0,0);
+        return d 
+    } diff();
+
+    function diff(){
+        const nd = new Date();
+        const ld = localStorage.getItem('lastDate');
+        const letReset = weekStart(nd).getTime() === weekStart(ld).getTime();
+        resetData(letReset ,weekStart(ld));
+    }
+
+    function resetData(letReset , ld){
+        if(letReset === false){
+        // گرفتن اطلاعات ماموریت برای ذخیره در تاریخچه 
+        const dataArray = ls.getData();
+        const giftArray = ls.getGifts();
+        const infoArray = [];
+        const giftInfo = [];
+        for(var i = 0 ; i < dataArray.length ; i++){
+            infoArray.push(`${dataArray[i].i1}: ${dataArray[i].i2*dataArray[i].i6} ${dataArray[i].i3} از ${dataArray[i].i4*dataArray[i].i2} ${dataArray[i].i3}`)
+        }
+        // گرفتن اطلاعات ماموریت برای ذخیره در تاریخچه 
+        for(var g = 0 ; g < giftArray.length ; g++){
+            if (giftArray[g][1] === true){giftInfo.push(giftArray[g][0]);}
+        }
+        
+        // ساخت عنوان هفته با تاریخ 
+        const ldd = new Date(ld);ldd.setDate(ldd.getDate() + 7);
+        const year = moment(ldd).jYear();const Lyear = moment(ld).jYear();
+        const monthNum = moment(ldd).jMonth();const LmonthNum = moment(ld).jMonth();
+        const month = ir.monthName(monthNum);const Lmonth = ir.monthName(LmonthNum);
+        const day = moment(ldd).jDate();const Lday = moment(ld).jDate();
+        let title = year === Lyear? `${year}: از ${Lday} ${Lmonth} تا ${day} ${month}`:` از ${Lday} ${Lmonth} ${Lyear} تا ${day} ${month} ${year}`;
+        
+        const hisArray = ls.getHistory();
+        hisArray.push(giftInfo , infoArray , allPer() , title);
+        console.log(hisArray);
+        localStorage.setItem("history" , JSON.stringify(hisArray));
+        localStorage.setItem("lastDate" , new Date())
+    }
+        
+    }
+}
+
 
 // بخش دیتا بیس
 const ls = {
@@ -423,10 +479,14 @@ const ls = {
     },
 
     showData: function(){
-        var dataArray = ls.getData()
+        const dataArray = ls.getData()
         for(var i = 0 ; i <dataArray.length ; i++){
             ls.createAgain(dataArray[i]);
         }
+        const firstLoad = localStorage.getItem("lastDate");
+        if (firstLoad === null){
+            const nd = new Date();
+            localStorage.setItem("lastDate" , nd);}
     },
 
     createAgain: function(a){
@@ -487,7 +547,7 @@ const ls = {
             percent(span2 , a.i4 , a.i6-1 , p.textContent.split(' '));
         }
 
-        },
+    },
 
     deleteData: function(obj){
         const dataArray = ls.getData();
@@ -495,13 +555,6 @@ const ls = {
         dataArray.splice(index , 1);
         localStorage.setItem("itm" , JSON.stringify(dataArray));
     },
-
-    getDone: function(){
-        let doneArray ;
-        const doneString = localStorage.getItem("done");
-        doneString === null ? doneArray = [] : doneArray = JSON.parse(doneString);
-        return doneArray;
-    }, 
 
     setDone: function(obj , doNum){
         const dataArray = ls.getData();
@@ -515,6 +568,53 @@ const ls = {
         const perString = localStorage.getItem("per");
         perString === null ? perArray = [] : perArray = JSON.parse(perString);
         return perArray;
+    },
+
+    getGifts: function(){
+        let giftArray ;
+        const giftString = localStorage.getItem("gift");
+        giftString === null ? giftArray = [] : giftArray = JSON.parse(giftString);
+        return giftArray;
+    },
+
+    getHistory: function(){
+        let hisArray ;
+        const hisString = localStorage.getItem("history");
+        hisString === null ? hisArray = [] : hisArray = JSON.parse(hisString);
+        return hisArray;
+    }
+}
+
+// کتابخانه تاریخ شمسی 
+const ir = {
+    weekDay: function(getDay){
+        switch (getDay){
+        case 6: day.innerHTML = "شنبه"; break;
+        case 0: day.innerHTML = "یکشنبه"; break;
+        case 1: day.innerHTML = "دوشنبه"; break;
+        case 2: day.innerHTML = "سه‌شنبه"; break;
+        case 3: day.innerHTML = "چهارشنبه"; break;
+        case 4: day.innerHTML = "پنجشنبه"; break;
+        case 5: day.innerHTML = "جمعه"; break;
+        }
+    },
+
+    monthName: function(mNum){
+        switch (mNum){
+        case 0: return "فروردین"; break;
+        case 1: return "اردیبهشت"; break;
+        case 2: return "خرداد"; break;
+        case 3: return "تیر"; break;
+        case 4: return "مرداد"; break;
+        case 5: return "شهریور"; break;
+        case 6: return "مهر"; break;
+        case 7: return "آبان"; break;
+        case 8: return "آذر"; break;
+        case 9: return "دی"; break;
+        case 10: return "بهمن"; break;
+        case 11: return "اسفند"; break;
+        }
     }
 }
 document.addEventListener("DOMContentLoaded" , ls.showData);
+document.addEventListener("DOMContentLoaded" , time);
