@@ -12,12 +12,15 @@ const inp3 = document.getElementById('three');
 const inp4 = document.getElementById('four');
 const inp5 = document.getElementById('five');
 const submit = document.getElementById('sub');
+const cancel = document.getElementById('cancel');
 const items = document.getElementsByClassName('items')[0];
 const day = document.getElementById('day');
+const access = document.getElementsByClassName('access')[0];
 //Events
 addBTN.addEventListener("click" , openAdd );
 backBTN.addEventListener("click" , backPage);
 submit.addEventListener("click" , limit);
+cancel.addEventListener("click" , openAdd);
 menuParent.addEventListener("click" , openMenu);
 closeBTN.addEventListener("click" , openMenu);
 //functions
@@ -28,14 +31,10 @@ function openMenu(){
     darsad.style.display === "flex" ? darsad.style.display = "none": darsad.style.display = "flex";
 }
 // برای باز کردن منوی وارد کردن اطلاعات ماموریت
-function openAdd(){
+function openAdd(e){
 addMenu.classList.toggle('hidden');
-if(addBTN.getAttribute('src') === 'icons/add.png'){
-addBTN.setAttribute('src', 'icons/close.png');
-addBTN.style.boxShadow = '2px 2px 4px inset';}
-else {
-    addBTN.setAttribute('src', 'icons/add.png');
-    addBTN.style.boxShadow = 'none';}
+access.classList.toggle('hidePage');
+if(e.target.id !== "cancel"){openMenu();}
 }
 // برای برگشتن به صفحه ی اول برنامه
 function backPage(){
@@ -45,8 +44,14 @@ function backPage(){
 function limit(){
     const a = inp2.value.length
     const b = inp4.value.length
-    let yekaWord = inp3.value.split(' ').length;
-    let nameWord = inp1.value.split(' ').length;
+    const yekaWord = inp3.value.split(' ').length;
+    const nameWord = inp1.value.split(' ').length;
+    const txt = `${inp2.value*inp4.value} ${inp3.value} ${inp1.value}`;
+    const dataArray = ls.getData();
+    let same = false;
+    for (var i = 0; i < dataArray.length; i++){
+        var txts = `${dataArray[i].i2*dataArray[i].i4} ${dataArray[i].i3} ${dataArray[i].i1}`
+        if (txt === txts){same = true};}
     if (a > 2 || b > 2 ||
         inp1.value === "" ||
         inp2.value === "" || inp2.value < 1 ||
@@ -57,14 +62,15 @@ function limit(){
         alert("  واحد و تکرار نمیتوانند بیشتر از 2 رقم، منفی، خالی یا اعشاری باشند همچنین تمام فیلد ها باید پر شوند. ")}
     else if (yekaWord > 1){alert(' یکا نمیتواند بیشتر از یک کلمه باشد ')}
     else if (nameWord > 3){alert('نام ماموریت نمیتواند بیشتر از 3 کلمه باشد ')}
+    else if (same === true){alert("این ماموریت قبلا اضافه شده")}
     else { creatItem();addMenu.classList.toggle('hidden');
             addBTN.setAttribute('src', 'icons/add.png');
-            addBTN.style.boxShadow = 'none';
 }
 }
 
 // برای ساختن یک ماموریت هفتگی با اطلاعاتی که کاربر داده
 function creatItem(){
+    access.classList.toggle('hidePage');
     // ساخت دیو و اسپن اول
     const newItem = document.createElement('div');
     newItem.setAttribute('class', 'item');
@@ -243,79 +249,45 @@ function allPer(){
 
 // تابع دکمه ی ویرایش 
 function edit(e){
+    access.classList.toggle('hidePage');
     const {pTag , name , yeka , span2 , tekrar , vahed , olaviyat , Obj } = helper(e);
     // ساخت تمام عنصر های لازم
-    var editPage = document.createElement('div');
-    var p1 = document.createElement('p');
-    var p2 = document.createElement('p');
-    var p3 = document.createElement('p');
-    var p4 = document.createElement('p');
-    var p5 = document.createElement('p');
-    var div1 = document.createElement('div');
-    var div2 = document.createElement('div');
-    var inputText1 = document.createElement('input');
-    var inputText2 = document.createElement('input');
-    var inputNum1 = document.createElement('input');
-    var inputNum2 = document.createElement('input');
-    var inputNum3 = document.createElement('input');
-    var hr1 = document.createElement('hr');
-    var hr2 = document.createElement('hr');
-    var hr3 = document.createElement('hr');
-    var submit = document.createElement('input');
-    var cancel = document.createElement('input');
-    // تایین ویژگی های عناصر ساخته شده
-    editPage.className = 'editPage';
-    p1.innerHTML = "نام ماموریت: ";
-    p2.innerHTML = "واحد: ";
-    p3.innerHTML = "یکا: ";
-    p4.innerHTML = "تکرار: ";
-    p5.innerHTML = "اولویت: ";
-    p1.className = "add_p";
-    p2.className = "add_p";
-    p3.className = "add_p";
-    p4.className = "add_p";
-    p5.className = "add_p";
-    div1.className = "top1";
-    div2.className = "top1";
-    inputNum1.setAttribute('type' , 'number');
-    inputNum2.setAttribute('type' , 'number');
-    inputNum3.setAttribute('type' , 'number');
-    inputText1.setAttribute('id' , 'one');
-    inputText2.setAttribute('id' , 'three');
-    inputNum1.value = vahed;
-    inputNum2.value = tekrar;
-    inputNum3.value = olaviyat;
-    inputText1.value = name;
-    inputText2.value = yeka;
-    inputNum1.className = "add_input";
-    inputNum2.className = "add_input";
-    inputNum3.className = "add_input";
-    inputText2.className = "add_input";
-    submit.setAttribute("id" , "sub");
-    cancel.setAttribute("id" , "can");
-    submit.setAttribute("value" , " ویرایش ");
-    cancel.setAttribute("value" , " لغو ");
-    submit.setAttribute('type' , 'submit');
-    cancel.setAttribute('type' , 'submit');
-    // جایگذاری عناصر ساخته شده
-    document.body.append(editPage);
-    editPage.append(p1 , inputText1 , hr1 , div1 , hr2, div2, hr3 , submit , cancel);
-    p2.append(inputNum1);
-    p3.append(inputText2);
-    p4.append(inputNum2);
-    p5.append(inputNum3);
-    div1.append(p2 , p3);
-    div2.append(p4 , p5);
+    const editPage = document.createElement('div'); editPage.className = 'editPage';  document.body.append(editPage);
+    const p1 = document.createElement('p'); p1.innerHTML = "نام ماموریت: ";
+    const p2 = document.createElement('p'); p2.innerHTML = "واحد: ";
+    const p3 = document.createElement('p'); p3.innerHTML = "یکا: "; 
+    const p4 = document.createElement('p'); p4.innerHTML = "تکرار: ";
+    const p5 = document.createElement('p'); p5.innerHTML = "اولویت: ";
+    p1.className = "add_p"; p2.className = "add_p"; p3.className = "add_p"; p4.className = "add_p"; p5.className = "add_p";
+    const div1 = document.createElement('div'); div1.className = "top1";
+    const div2 = document.createElement('div'); div2.className = "top1";
+    const inputText1 = document.createElement('input'); inputText1.setAttribute('id' , 'one'); inputText1.value = name; 
+    const inputText2 = document.createElement('input'); inputText2.setAttribute('id' , 'three'); inputText2.value = yeka; inputText2.className = "add_input";
+    const inputNum1 = document.createElement('input'); inputNum1.setAttribute('type' , 'number'); inputNum1.value = vahed; inputNum1.className = "add_input";
+    const inputNum2 = document.createElement('input'); inputNum2.setAttribute('type' , 'number'); inputNum2.value = tekrar; inputNum2.className = "add_input";
+    const inputNum3 = document.createElement('input'); inputNum3.setAttribute('type' , 'number'); inputNum3.value = olaviyat; inputNum3.className = "add_input";
+    const hr1 = document.createElement('hr'); 
+    const hr2 = document.createElement('hr'); 
+    const hr3 = document.createElement('hr'); 
+    const submit = document.createElement('input'); submit.setAttribute("id" , "sub"); submit.setAttribute("value" , " ویرایش "); submit.setAttribute('type' , 'submit');
+    const cancel = document.createElement('input'); cancel.setAttribute("id" , "can"); cancel.setAttribute("value" , " لغو "); cancel.setAttribute('type' , 'submit');
+    editPage.append(p1 , inputText1 , hr1 , div1 , hr2, div2, hr3 , submit , cancel); p2.append(inputNum1); p3.append(inputText2); p4.append(inputNum2); p5.append(inputNum3); div1.append(p2 , p3); div2.append(p4 , p5);
     // تعاملی کردن دکمه ها 
     cancel.addEventListener('click' , laghv);
     submit.addEventListener('click' , editLimit);
     // محدودیت های ورودی های ویرایش 
+    
     function editLimit(){
-        var a = inputNum1.value.length
-        var b = inputNum2.value.length
-        var yekaWord = inputText2.value.split(' ').length;
-        var nameWord = inputText1.value.split(' ').length;
-
+        const a = inputNum1.value.length
+        const b = inputNum2.value.length
+        const yekaWord = inputText2.value.split(' ').length;
+        const nameWord = inputText1.value.split(' ').length;
+        const txt = `${inputNum1.value*inputNum2.value} ${inputText2.value} ${inputText1.value}`;
+        const dataArray = ls.getData();
+        let same = false;
+        for (var i = 0; i < dataArray.length; i++){
+            var txts = `${dataArray[i].i2*dataArray[i].i4} ${dataArray[i].i3} ${dataArray[i].i1}`
+            if (txt === txts){same = true};}
         if (a > 2 || b > 2 ||
             inputText1.value === "" ||
             inputNum1.value === "" || inputNum1.value < 1 ||
@@ -323,10 +295,12 @@ function edit(e){
             inputNum2.value === "" || inputNum2.value < 1 ||
             inputNum3.value === "" 
             ){alert("  واحد و تکرار نمیتوانند بیشتر از 2 رقم، منفی، خالی یا اعشاری باشند همچنین تمام فیلد ها باید پر شوند. ")
-       } else if (yekaWord > 1){alert(' یکا نمیتواند بیشتر از یک کلمه باشد ')}
-         else if (nameWord > 3){alert('نام ماموریت نمیتواند بیشتر از 3 کلمه باشد ')}
-       else {submitEdit();}
+       }else if (yekaWord > 1){alert(' یکا نمیتواند بیشتر از یک کلمه باشد ')}
+        else if (nameWord > 3){alert('نام ماموریت نمیتواند بیشتر از 3 کلمه باشد ')}
+        else if (same === true){alert("این ماموریت قبلا اضافه شده")}
+        else {submitEdit();}
     }
+
     // ثبت ویرایش
     function submitEdit() {
         pTag.innerHTML = "";
@@ -350,12 +324,13 @@ function edit(e){
         allPer();
     }
     // بستن صفحه ی ویرایش 
-    function laghv(){cancel.parentElement.remove();}
+    function laghv(){cancel.parentElement.remove();access.classList.toggle('hidePage');}
 }
 
 
 // تابع دکمه ی حذف
 function del(e){
+    access.classList.toggle('hidePage');
     const {Obj} = helper(e);
     // ساخت تمام عنصر های لازم
     var deletePage = document.createElement('div');
@@ -389,7 +364,7 @@ function del(e){
         allPer();
     }
     
-    function laghv(){deletePage.remove();}
+    function laghv(){deletePage.remove();access.classList.toggle('hidePage');}
 
 }
 

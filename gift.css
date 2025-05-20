@@ -64,6 +64,7 @@ body {
     justify-content: space-around;
     border-radius: 45px;
     border: 3px dashed black;
+    z-index: 1002;
 }
 
 #addinp { 
@@ -146,6 +147,7 @@ body {
     justify-content: space-around;
     border: 5px solid black;
     border-radius: 30px;
+    z-index: 1002;
 }
 .delText {
      font-size: 1.7em;
@@ -156,10 +158,23 @@ body {
 .edit {
     background-color:deepskyblue;
     align-items: center;
+    z-index: 1002;
 }
 .editInp {
     width: 90%;
     height: 13%;
     font-size: 2em;
     border: 3px dashed black;
+}
+.access {
+    background-color: rgba(0, 0, 0, 0.378);
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    height: 100%;
+    width: 100%;
+    z-index: 1001;
+}
+.hidePage {
+    display: none;
 }

@@ -4,6 +4,7 @@ const menu = document.getElementsByClassName('menu')[0];
 const addBTN = document.getElementById('addBTN');
 const items = document.getElementsByClassName('items')[0];
 const pop = document.getElementById('pop');
+const access = document.getElementsByClassName('access')[0];
 //Events
 menuParent.addEventListener("click" , openMenu);
 closeBTN.addEventListener("click" , openMenu);
@@ -21,6 +22,10 @@ function backPage(){
 
 //برای اضافه کردن جایزه 
 function add(){
+    // بستن منو
+    openMenu();
+    // قطع دسترسی به صفحه پشت 
+    access.classList.toggle('hidePage');
     //ساخت آیتم های مورد نیاز 
     const div = document.createElement('div');
     document.body.append(div);
@@ -31,7 +36,8 @@ function add(){
     const can = document.getElementById('can');
 
     sub.addEventListener('click' , create);
-    can.addEventListener('click' , Close = () => can.parentElement.parentElement.remove());
+
+    can.addEventListener('click' , Close = () => {can.parentElement.parentElement.remove(); access.classList.toggle('hidePage');});
 }
 
 
@@ -39,6 +45,7 @@ function create (e){
     const input = e.target.parentElement.parentElement.children[0].value
     if (input === ''){alert("چیزی ننوشتی که!")}
     else if (ls.findInd(input) !== undefined){alert("این جایزه رو قبلا نوشتی!")}else{
+    access.classList.toggle('hidePage');    
     const div = document.createElement('div'); div.className = "item" ; items.append(div);
     const img = document.createElement("img") ; img.className = "heart" ; img.setAttribute("src" , "icons/lightHeart.png" ); div.append(img);
     const p = document.createElement("p") ; p.className = "text" ; p.innerHTML = input ; div.append(p);
@@ -54,6 +61,9 @@ function create (e){
 
 
 function edit(e){
+     // قطع دسترسی به صفحه پشت 
+    access.classList.toggle('hidePage');
+
     let p = e.target.parentElement.parentElement.children[1];
     const text = e.target.parentElement.parentElement.children[1].textContent;
     const div = document.createElement('div'); div.className = 'del edit' ; document.body.append(div);
@@ -62,11 +72,13 @@ function edit(e){
     const sub = document.createElement("input") ; sub.id = 'sub'; sub.setAttribute("type" , "submit"); sub.setAttribute("value" , "ثبت"); div0.append(sub); 
     const can = document.createElement("input") ; can.id = 'can'; can.setAttribute("type" , "button"); can.setAttribute("value" , "لغو"); div0.append(can); 
     
-    can.addEventListener("click" , Close = () => can.parentElement.parentElement.remove());
+    can.addEventListener("click" , Close = () => {can.parentElement.parentElement.remove(); access.classList.toggle('hidePage');})
+    
     sub.addEventListener("click" , editing);
 
     function editing(){
         if (inp.value === ""){alert("فیلد خالیه!")}else{
+        access.classList.toggle('hidePage');
         p.innerHTML = inp.value;
         ls.edit(text , inp.value);
         can.parentElement.parentElement.remove();
@@ -75,6 +87,8 @@ function edit(e){
 }
 
 function del(e){
+
+    access.classList.toggle('hidePage');
     const item = e.target.parentElement.parentElement ;
     const text = e.target.parentElement.parentElement.children[1].textContent;
     const div = document.createElement('div'); div.className = 'del' ; document.body.append(div);
@@ -83,10 +97,12 @@ function del(e){
     const sub = document.createElement("input") ; sub.id = 'sub'; sub.setAttribute("type" , "submit"); sub.setAttribute("value" , "آره!"); div0.append(sub); 
     const can = document.createElement("input") ; can.id = 'can'; can.setAttribute("type" , "button"); can.setAttribute("value" , "لغو"); div0.append(can); 
     
-    can.addEventListener("click" , Close = () => can.parentElement.parentElement.remove());
+        
+    can.addEventListener("click" , Close = () => {can.parentElement.parentElement.remove(); access.classList.toggle('hidePage'); });
     sub.addEventListener("click" , deleting)
 
     function deleting(){
+        access.classList.toggle('hidePage');
         item.remove();
         ls.deleteData(text);
         can.parentElement.parentElement.remove();
