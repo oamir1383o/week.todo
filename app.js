@@ -382,10 +382,13 @@ function findINDEX(dA , obj){
 
 // تابع زمان
 function time(){
+    
+    
     // برای نمایش روز هفته در صفحه 
     const getDay = new Date().getDay();
     ir.weekDay(getDay);
 
+    // تابع برگرداندن اول هفته 
     function weekStart(date){
         const d = new Date(date);
         const day = d.getDay();
@@ -395,6 +398,7 @@ function time(){
         return d 
     } diff();
 
+    // تابع تشخیص اختلاف تاریخ ها
     function diff(){
         const nd = new Date();
         const ld = localStorage.getItem('lastDate');
@@ -402,6 +406,7 @@ function time(){
         resetData(letReset ,weekStart(ld));
     }
 
+    // تابع ریست کردن برنامه
     function resetData(letReset , ld){
         if(letReset === false){
         // گرفتن اطلاعات ماموریت برای ذخیره در تاریخچه 
@@ -409,10 +414,11 @@ function time(){
         const giftArray = ls.getGifts();
         const infoArray = [];
         const giftInfo = [];
+
         for(var i = 0 ; i < dataArray.length ; i++){
             infoArray.push(`${dataArray[i].i1}: ${dataArray[i].i2*dataArray[i].i6} ${dataArray[i].i3} از ${dataArray[i].i4*dataArray[i].i2} ${dataArray[i].i3}`)
         }
-        // گرفتن اطلاعات ماموریت برای ذخیره در تاریخچه 
+
         for(var g = 0 ; g < giftArray.length ; g++){
             if (giftArray[g][1] === true){giftInfo.push(giftArray[g][0]);}
         }
@@ -426,16 +432,31 @@ function time(){
         let title = year === Lyear? `${year}: از ${Lday} ${Lmonth} تا ${day} ${month}`:` از ${Lday} ${Lmonth} ${Lyear} تا ${day} ${month} ${year}`;
         
         const hisArray = ls.getHistory();
-        hisArray.push(giftInfo , infoArray , allPer() , title);
+        hisArray.push([giftInfo , infoArray , allPer() , title]);
         console.log(hisArray);
         localStorage.setItem("history" , JSON.stringify(hisArray));
-        localStorage.setItem("lastDate" , new Date())
-    }
+        localStorage.setItem("lastDate" , new Date());
+        reset();
+    }else{localStorage.setItem("lastDate" , new Date());}
         
     }
 }
 
+function reset(){
+    const dataArray = ls.getData();
+    const giftArray = ls.getGifts();
 
+    for(var i = 0 ; i < dataArray.length ; i++){
+        dataArray[i].i6 = 0 ;
+    }
+    localStorage.setItem("itm" , JSON.stringify(dataArray)); 
+    
+    for(var g = 0 ; g < giftArray.length ; g++){
+        giftArray[g][1] = false;
+    }
+    localStorage.setItem("gift" , JSON.stringify(giftArray));
+
+}
 // بخش دیتا بیس
 const ls = {
 

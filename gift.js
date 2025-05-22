@@ -17,7 +17,7 @@ function openMenu(){
 }
 // برای برگشتن به صفحه ی اول برنامه
 function backPage(){
-    window.location.href="index.html"
+    window.location.href="index.html";
 }
 
 //برای اضافه کردن جایزه 

@@ -4,10 +4,155 @@
     <meta charset="UTF-8">
     <title>گزارش</title>
 </head>
-<body>
+<style>
+@font-face {
+    font-family: 'irsans' ;
+    font-style: normal;
+    font-weight: 400;
+    src: url('fonts/iranian-sans.woff') format('woff');
+}
+@keyframes info {
+    from {font-size: 0;}
+    to {font-size: 1.2em;}
+}
+html {min-height: 100vh;}
+body {
+    min-height: 100vh;
+    /* background-image: linear-gradient( to right, white , rgba(255, 99, 71, 0.596), white , rgba(255, 99, 71, 0.596), white , rgba(255, 99, 71, 0.596), white , rgba(255, 99, 71, 0.596)) */
+}
+h1 {
+    text-align: center;
+}
+.items {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.item {
+    margin: 20px 0px;
+    width: 97%;
+    display: flex;
+    flex-direction: column;
     
+}
+.header {
+    background-color: orange;
+    font-size: 1.3em;
+    padding: 10px 5px ;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 5px solid black;
+}
+.footer {
+    background-color: lightsalmon;
+    border: 5px solid black;
+    border-top: none;
+    display: none;
+    justify-content: space-between;
+    font-size: 1.2em;
+    animation-name: info;
+    animation-duration: 0.75s;
+}
+.footer ul {
+    max-width: 50%;
+}
+.footer ul li {
+ color: black;
+ font-size: 1.2em;
+}
+
+.shortInfo {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    gap: 20px;
+    font-size: 1.3em;
+}
+.num {
+    display: flex;
+    align-items: center;
+}
+
+#backBTN {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: lightskyblue;
+    border-radius: 45px;
+    box-shadow: -5px -5px 10px inset black;
+}
+
+</style>
+
+<body>
+
+    <img id="backBTN" src="icons/backicon.png" width="auto" height="10%">
+
+    <h1> تاریخچه </h1>
+
+    <div class="items"></div>
+
+
 
     <script>
+
+const items = document.getElementsByClassName('items')[0];
+
+backBTN.addEventListener("click" , backPage);
+
+// برای برگشتن به صفحه ی اول برنامه
+function backPage(){
+    window.location.href="index.html";
+}
+
+
+function createItem(){
+    const h = getHistory();
+    for (var i = 0; i < h.length; i++){
+    // ساخت آیتم ها 
+    const div = document.createElement('div'); items.append(div); div.className = 'item';
+    const div0 = document.createElement('div');div0.className = "header"; div.append(div0); 
+        div0.innerHTML = `<strong><p> ${h[i][3]} </p></strong><div class="shortInfo">
+        <p class="num"><img src="icons/check.png">${h[i][2]} </p>
+        <p class="num"><img src="icons/heart.png">${h[i][0].length}</p></div>`
+    const div1 = document.createElement("div"); div1.className = "footer"; div.append(div1);
+    const ul0 = document.createElement("ul");ul0.className = "doList"; div1.append(ul0);
+    const ul1 = document.createElement("ul");ul1.className = "giftList"; div1.append(ul1);
+    const h10 = document.createElement("h3");h10.innerHTML = "کارایی که انجام دادی:"; ul0.append(h10);
+    const h11 = document.createElement("h3");h11.innerHTML = "جایزه هایی که به خودت دادی:"; ul1.append(h11);
+    for (var a = 0; a<h[i][1].length; a++){
+        const li = document.createElement("li");li.append(h[i][1][a]);ul0.append(li);
+     }   
+    for (var b = 0; b<h[i][0].length; b++){
+        const li = document.createElement("li");li.append(h[i][0][b]);ul1.append(li);
+    }
+    div.addEventListener("click" , showInfo);
+}}
+
+
+function showInfo(e){
+
+    if (e.currentTarget.children[1].style.display !== "flex"){
+        e.currentTarget.children[1].style.display = "flex";
+        e.currentTarget.children[0].style.borderBottom = "5px dashed black"
+    }else {
+        e.currentTarget.children[1].style.display = "none";
+        e.currentTarget.children[0].style.borderBottom = "5px solid black"
+    }
+}
+
+
+function getHistory() {
+    let hisArray ;
+    const hisString = localStorage.getItem("history");
+    hisString === null ? hisArray = [] : hisArray = JSON.parse(hisString);
+    return hisArray;
+}
+
+
+document.addEventListener("DOMContentLoaded" , createItem);
+
     </script>
 </body>
 </html>
