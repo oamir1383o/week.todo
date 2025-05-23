@@ -81,11 +81,11 @@ function creatItem(){
     newItem.append(span1);
     // ساخت دکمه ی افزایش و کاهش
     const plusBTN = document.createElement('img');
-    plusBTN.setAttribute('class', 'plus');
+    plusBTN.classList.add('hidden', 'plus');
     plusBTN.setAttribute('src', 'icons/plus.png');
     span1.append(plusBTN);
     const subtracBTN = document.createElement('img');
-    subtracBTN.setAttribute('class', 'subtrac');
+    subtracBTN.classList.add('hidden', 'subtrac');
     subtracBTN.setAttribute('src', 'icons/subtrac.png');
     span1.append(subtracBTN);
     // قرار دادن اطلاعات ماموریت در اسپن اول
@@ -96,11 +96,11 @@ function creatItem(){
     span1.append(p);
     // ساخت دکمه ی حذف و ویرایش
     const editBTN = document.createElement('img');
-    editBTN.setAttribute('class' , 'edit')
+    editBTN.classList.add('hidden' , 'edit')
     editBTN.setAttribute('src' , 'icons/edit.png');
     span1.append(editBTN);
     const delBTN = document.createElement('img');
-    delBTN.setAttribute('class' , 'del')
+    delBTN.classList.add('hidden' , 'del')
     delBTN.setAttribute('src' , 'icons/delete.png');
     span1.append(delBTN);
     // ساخت اسپن دوم با اطلاعاتی که کاربر داده
@@ -109,6 +109,7 @@ function creatItem(){
     span2.style.gridTemplateColumns= 'repeat('+inp4.value+', 1fr)';
     newItem.append(span2);
     // تعاملی کردن دکمه های ساخته شده
+    newItem.addEventListener("click" , hide);
     plusBTN.addEventListener('click' , plus);
     subtracBTN.addEventListener('click' , subtrac);
     editBTN.addEventListener('click' , edit);
@@ -130,6 +131,21 @@ function creatItem(){
     inp3.value = "";
     inp4.value = "";
     inp5.value = "";
+}
+
+// برای نمایان کردن دکمه های آیتم
+function hide(e){
+    if (e.target.classList[0] !== "plus" &&
+        e.target.classList[0] !== "subtrac" &&
+        e.target.classList[0] !== "edit" &&
+        e.target.classList[0] !== "del"
+    ){
+    e.currentTarget.children[0].classList.toggle("row1");
+    e.currentTarget.children[0].children[0].classList.toggle('hidden');
+    e.currentTarget.children[0].children[1].classList.toggle('hidden');
+    e.currentTarget.children[0].children[3].classList.toggle('hidden');
+    e.currentTarget.children[0].children[4].classList.toggle('hidden');
+    }
 }
 
 
@@ -242,6 +258,7 @@ function allPer(){
         const per = Math.floor((dataArray[i].i6/dataArray[i].i4)*100)
         all += per;
         }
+    if (dataArray.length === 0){dataArray.length = 1}
     darsad.children[0].innerHTML = Math.floor(all/dataArray.length)+"%" ;
     return Math.floor(all/dataArray.length)+"%"
 }
@@ -496,11 +513,11 @@ const ls = {
         newItem.append(span1);
         // ساخت دکمه ی افزایش و کاهش
         var plusBTN = document.createElement('img');
-        plusBTN.setAttribute('class', 'plus');
+        plusBTN.classList.add('hidden' , 'plus');
         plusBTN.setAttribute('src', 'icons/plus.png');
         span1.append(plusBTN);
         var subtracBTN = document.createElement('img');
-        subtracBTN.setAttribute('class', 'subtrac');
+        subtracBTN.classList.add('hidden', 'subtrac');
         subtracBTN.setAttribute('src', 'icons/subtrac.png');
         span1.append(subtracBTN);
         // قرار دادن اطلاعات ماموریت در اسپن اول
@@ -511,11 +528,11 @@ const ls = {
         span1.append(p);
         // ساخت دکمه ی حذف و ویرایش
         var editBTN = document.createElement('img');
-        editBTN.setAttribute('class' , 'edit')
+        editBTN.classList.add('hidden' , 'edit');
         editBTN.setAttribute('src' , 'icons/edit.png');
         span1.append(editBTN);
         var delBTN = document.createElement('img');
-        delBTN.setAttribute('class' , 'del')
+        delBTN.classList.add('hidden' , 'del');
         delBTN.setAttribute('src' , 'icons/delete.png');
         span1.append(delBTN);
         // ساخت اسپن دوم و نوار وظیفه با اطلاعاتی که کاربر داده
@@ -526,6 +543,7 @@ const ls = {
         const div = document.createElement('div');
         div.setAttribute('class' , 'fraktion');
         // تعاملی کردن دکمه های ساخته شده
+        newItem.addEventListener("click" , hide);
         plusBTN.addEventListener('click' , plus);
         subtracBTN.addEventListener('click' , subtrac);
         editBTN.addEventListener('click' , edit);
