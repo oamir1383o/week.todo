@@ -40,7 +40,7 @@ body {
     justify-content: space-between;
     position: fixed;
     animation-name: menu;
-    animation-duration: 0.75s;
+    animation-duration: 0.45s;
     width: 100%;
     height: 15%;
     top: 0px;
@@ -85,6 +85,9 @@ body {
     justify-content: space-between;
     width: 95%;
     
+}
+.itemInfo img {
+    filter: drop-shadow(4px 4px 8px black );
 }
 .plus {width: auto; height: 70px;}
 .subtrac {width: auto; height: 66px;}
