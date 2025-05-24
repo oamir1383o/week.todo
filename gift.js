@@ -77,7 +77,9 @@ function edit(e){
     sub.addEventListener("click" , editing);
 
     function editing(){
-        if (inp.value === ""){alert("فیلد خالیه!")}else{
+        if (inp.value === ""){alert("فیلد خالیه!")}
+        else if (ls.findInd(inp.value) !== undefined){alert("این جایزه رو قبلا نوشتی!")}
+        else{
         access.classList.toggle('hidePage');
         p.innerHTML = inp.value;
         ls.edit(text , inp.value);

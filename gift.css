@@ -7,14 +7,17 @@
 html {min-height: 100vh;}
 body {
     min-height: 100vh;
-    background-image: linear-gradient( to right, white , rgba(255, 99, 71, 0.596), white , rgba(255, 99, 71, 0.596), white , rgba(255, 99, 71, 0.596), white , rgba(255, 99, 71, 0.596))
+    /* background-image: linear-gradient( to right, white , rgba(255, 99, 71, 0.596), white , rgba(255, 99, 71, 0.596), white , rgba(255, 99, 71, 0.596), white , rgba(255, 99, 71, 0.596)) */
+    background-color: rgba(255, 99, 71, 0.603);
 }
 #menuParent {
     position: fixed;
-    left: 5px;
-    top: 5px;
+    left: 30px;
+    top: 30px;
+    width: 10vh;
+    height:10%;
     background-color: lightskyblue;
-    border-radius: 45px;
+    border-radius: 180px;
     box-shadow: -5px -5px 10px inset black;
 }
 @keyframes menu {
@@ -28,8 +31,8 @@ body {
     animation-name: menu;
     animation-duration: 0.45s;
     width: 100%;
-    height: 15%;
-    top: 0px;
+    height: 11.5%;
+    top: 30px;
     z-index: 1000;
 }
 
@@ -37,7 +40,7 @@ body {
 
 .menu img {
     background-color: lightskyblue;
-    border-radius: 45px;
+    border-radius: 180px;
     box-shadow: -5px -5px 10px inset black;
 } #closeBTN {
     background-color: tomato;
@@ -45,36 +48,39 @@ body {
 
 .items {
     height: 100%;
-    padding-top: 20%;
+    padding-top: 30%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 15px;
+    gap: 50px;
 }
 .addPage {
     position: fixed;
-    width: 80%;
-    height: 30%;
-    top: 35%;
-    right: 10%;
+    width: 95%;
+    height: 25%;
+    top: 30%;
+    right: 2.5%;
     background-color: lightskyblue;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-around;
-    border-radius: 45px;
-    border: 3px dashed black;
+    justify-content: space-evenly;
+    border-radius: 85px;
+    border: 7px dashed black;
+    font-size: 2em;
     z-index: 1002;
 }
 
 #addinp { 
-    width: 75%;
-    height: 15%;
-    font-size: 1.7em;
+    width: 85%;
+    height: 20%;
+    border: 3px dashed black;
+    font-size: 1.85em;
 }
 .addPageBTN {
     width: 100%;
-    height: 20%;
+    height: 25%;
+    gap: 50px;
     display: flex;
     justify-content: center;
 }
@@ -89,18 +95,18 @@ body {
 }
 .item {
     width: 90%;
-    height: 20%;
-    background-color: rgba(255, 0, 255, 0.774);
-    box-shadow: -5px -5px 20px inset black;
+    min-height: 260px;
+    background-color: skyblue;
+    box-shadow: -10px -10px 30px inset black;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-radius: 45px;
-    padding: 20px 0px;
-
+    border-radius: 120px;
+    /* padding: 20px 0px; */
+    font-size: 2em;
 }
 .text {
-    width: 64%;
+    width: 60%;
     font-size: 1.8em;
     font-family: irsans;
     text-align: center;
@@ -108,27 +114,29 @@ body {
 .itemBTN {
     display: flex;
     flex-direction: column;
-    width: 19%;
-    height: 50%;
-    gap: 5%;
+    width: 30%;
+    height: 250px;
+    gap: 30px;
 }
 .itemBTN button{
     width: 100%;
     height: 100%;
-    border-radius: 13px;
+    /* border-radius: 13px; */
     font-size: 1.2em;
     font-family: irsans;
     color: white;
     background-color: black;
 }
 .itemBTN1{
-    box-shadow: -5px -5px 20px inset blue;
+    box-shadow: -10px -10px 40px inset blue;
+    border-top-left-radius: 120px;
 }
 .itemBTN2{
     box-shadow: -5px -5px 20px inset red;
+    border-bottom-left-radius: 120px;
 }
 .heart {
-    width: 14%;
+    width: 17%;
     margin-right: 3%;
 }
 .fulHeart {
@@ -137,16 +145,17 @@ body {
 
 .del {
     position: fixed;
-    width: 70%;
-    height: 40%;
+    width: 95%;
+    height: 25%;
     top: 30%;
-    right: 15%;
+    right: 2.5%;
     background-color: crimson;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    border: 5px solid black;
+    border: 7px solid black;
     border-radius: 30px;
+    font-size: 2.4em;
     z-index: 1002;
 }
 .delText {
@@ -162,9 +171,9 @@ body {
 }
 .editInp {
     width: 90%;
-    height: 13%;
+    height: 20%;
     font-size: 2em;
-    border: 3px dashed black;
+    border: 5px dashed black;
 }
 .access {
     background-color: rgba(0, 0, 0, 0.378);
