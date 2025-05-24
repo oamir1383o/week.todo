@@ -299,12 +299,13 @@ function edit(e){
         const b = inputNum2.value.length
         const yekaWord = inputText2.value.split(' ').length;
         const nameWord = inputText1.value.split(' ').length;
-        const txt = `${inputNum1.value*inputNum2.value} ${inputText2.value} ${inputText1.value}`;
+        const txt = `${vahed*tekrar} ${yeka} ${name}`;
+        const newtxt = `${inputNum1.value*inputNum2.value} ${inputText2.value} ${inputText1.value}`;
         const dataArray = ls.getData();
         let same = false;
         for (var i = 0; i < dataArray.length; i++){
             var txts = `${dataArray[i].i2*dataArray[i].i4} ${dataArray[i].i3} ${dataArray[i].i1}`
-            if (txt === txts){same = true};}
+            if (newtxt === txts && newtxt !== txt){same = true};}
         if (a > 2 || b > 2 ||
             inputText1.value === "" ||
             inputNum1.value === "" || inputNum1.value < 1 ||
